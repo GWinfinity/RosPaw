@@ -89,7 +89,7 @@ colcon build --packages-select rostofu_bringup
 source install/setup.bash
 ```
 
-### 5️⃣ 启动！🎉
+### 5️⃣ 启动 🎉
 
 ```bash
 ros2 launch rostofu_bringup copaw_launch.py
@@ -146,12 +146,12 @@ ros2 run rostofu_bringup copaw_node --ros-args -p copaw_path:="/path/to/copaw"
 ```bash
 # Linux
 ros2 launch rostofu_bringup copaw_launch.py \
-  tofu_path:="/home/user/RosTofu/.venv/bin/tofu" \
+  copaw_path:="/home/user/RosTofu/.venv/bin/copaw" \
   auto_start:=true
 
 # Windows
 ros2 launch rostofu_bringup copaw_launch.py ^
-  tofu_path:="D:\\RosTofu\\.venv\\Scripts\\tofu.exe" ^
+  copaw_path:="D:\\RosTofu\\.venv\\Scripts\\copaw.exe" ^
   auto_start:=true
 ```
 

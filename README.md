@@ -89,7 +89,7 @@ colcon build --packages-select rostofu_bringup
 source install/setup.bash
 ```
 
-### 5️⃣ Launch! 🎉
+### 5️⃣ Launch 🎉
 
 ```bash
 ros2 launch rostofu_bringup copaw_launch.py
