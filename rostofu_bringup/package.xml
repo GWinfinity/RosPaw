@@ -3,7 +3,7 @@
 <package format="3">
   <name>rostofu_bringup</name>
   <version>0.1.0</version>
-  <description>ROS2 package for launching tofu application</description>
+  <description>ROS2 package for launching copaw application</description>
   <maintainer email="user@example.com">user</maintainer>
   <license>MIT</license>
 

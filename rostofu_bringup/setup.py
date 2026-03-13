@@ -10,18 +10,18 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/launch', ['launch/tofu_launch.py']),
+        ('share/' + package_name + '/launch', ['launch/copaw_launch.py']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='user',
     maintainer_email='user@example.com',
-    description='ROS2 package for launching tofu application',
+    description='ROS2 package for launching copaw application',
     license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'tofu_node = rostofu_bringup.tofu_node:main',
+            'copaw_node = rostofu_bringup.copaw_node:main',
         ],
     },
 )

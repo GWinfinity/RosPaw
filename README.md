@@ -2,7 +2,7 @@
 
 # 🧊 RosTofu
 
-**ROS2 × Tofu — Your Application in Robotics World**
+**ROS2 × copaw — Your Application in Robotics World**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![ROS2](https://img.shields.io/badge/ROS2-Humble%20%7C%20Jazzy-blue.svg)](https://docs.ros.org/)
@@ -70,10 +70,10 @@ source .venv/bin/activate  # Linux/macOS
 ### 3️⃣ Install Your Application
 
 ```bash
-# Install your application (example: tofu)
-uv pip install tofu
+# Install your application (example: copaw)
+uv pip install copaw
 # or
-pip install tofu
+pip install copaw
 ```
 
 ### 4️⃣ Build ROS2 Package
@@ -146,12 +146,12 @@ ros2 run rostofu_bringup tofu_node --ros-args -p tofu_path:="/path/to/your/app"
 ```bash
 # Linux
 ros2 launch rostofu_bringup tofu_launch.py \
-  tofu_path:="/home/user/RosTofu/.venv/bin/tofu" \
+  tofu_path:="/home/user/RosTofu/.venv/bin/copaw" \
   auto_start:=true
 
 # Windows
 ros2 launch rostofu_bringup tofu_launch.py ^
-  tofu_path:="D:\\RosTofu\\.venv\\Scripts\\tofu.exe" ^
+  tofu_path:="D:\\RosTofu\\.venv\\Scripts\\copaw.exe" ^
   auto_start:=true
 ```
 

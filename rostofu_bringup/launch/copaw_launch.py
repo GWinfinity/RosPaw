@@ -1,5 +1,5 @@
 """
-Launch file for starting tofu ROS2 node.
+Launch file for starting copaw ROS2 node.
 """
 
 from launch import LaunchDescription
@@ -9,35 +9,35 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    """Generate launch description for tofu node."""
+    """Generate launch description for copaw node."""
     
     # Declare launch arguments
-    tofu_path_arg = DeclareLaunchArgument(
-        'tofu_path',
+    copaw_path_arg = DeclareLaunchArgument(
+        'copaw_path',
         default_value='',
-        description='Path to tofu executable (auto-detected if empty)'
+        description='Path to copaw.exe executable (auto-detected if empty)'
     )
     
     working_dir_arg = DeclareLaunchArgument(
         'working_directory',
         default_value='',
-        description='Working directory for tofu process'
+        description='Working directory for copaw process'
     )
     
     auto_start_arg = DeclareLaunchArgument(
         'auto_start',
         default_value='true',
-        description='Automatically start tofu on node startup'
+        description='Automatically start copaw on node startup'
     )
     
-    # Create the tofu node
-    tofu_node = Node(
+    # Create the copaw node
+    copaw_node = Node(
         package='rostofu_bringup',
-        executable='tofu_node',
-        name='tofu_node',
+        executable='copaw_node',
+        name='copaw_node',
         output='screen',
         parameters=[{
-            'tofu_path': LaunchConfiguration('tofu_path'),
+            'copaw_path': LaunchConfiguration('copaw_path'),
             'working_directory': LaunchConfiguration('working_directory'),
             'auto_start': LaunchConfiguration('auto_start'),
         }],
@@ -45,8 +45,8 @@ def generate_launch_description():
     )
     
     return LaunchDescription([
-        tofu_path_arg,
+        copaw_path_arg,
         working_dir_arg,
         auto_start_arg,
-        tofu_node,
+        copaw_node,
     ])
