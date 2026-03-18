@@ -9,7 +9,7 @@
 [![Python](https://img.shields.io/badge/Python-3.9%2B-green.svg)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey.svg)]()
 
-[English](README.md) | [中文](README_CN.md)
+[English](README.md) | [中文](README_CN.md) | [🐧 Linux Advantages](LINUX_ADVANTAGES.md)
 
 </div>
 
@@ -37,6 +37,9 @@ Whether you're building a smart robot application or integrating software into y
 | 🔍 **Auto-Detection** | Automatically finds executable in `.venv` or system PATH |
 | ⚡ **Launch Files** | Ready-to-use ROS2 launch configurations |
 | 🐧 **Multi-Platform** | Native support for Windows and Linux |
+| 🎙️ **Natural Language** | Control robot with voice/text commands (see [NL_CONTROL.md](NL_CONTROL.md)) |
+| 🎤 **Voice Control** | Speech recognition & text-to-speech support |
+| 🤖 **AI Integration** | Deep integration with Copaw AI assistant |
 
 ---
 
@@ -47,6 +50,8 @@ Whether you're building a smart robot application or integrating software into y
 - [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html) or [Jazzy](https://docs.ros.org/en/jazzy/Installation.html)
 - [Python](https://www.python.org/) 3.9+
 - [uv](https://docs.astral.sh/uv/) (recommended) or pip
+
+> 💡 **For production use, we strongly recommend [Linux (Ubuntu)](LINUX_ADVANTAGES.md) for better ROS2 DDS performance and real-time control support.**
 
 ### 1️⃣ Clone & Setup
 
@@ -91,9 +96,40 @@ source install/setup.bash
 
 ### 5️⃣ Launch 🎉
 
+**Standard Mode:**
 ```bash
 ros2 launch rostofu_bringup copaw_launch.py
 ```
+
+**Natural Language Mode (Linux recommended):**
+```bash
+# Quick start with interactive menu
+./start_nl_mode.sh
+
+# Or specify mode directly
+./start_nl_mode.sh --basic   # Local LLM (Ollama)
+./start_nl_mode.sh --full    # With voice input
+```
+
+### 🎙️ Natural Language Mode (New!)
+
+Control your robot using natural language or voice commands:
+
+```bash
+# Start NL mode
+ros2 launch rostofu_bringup rospaw_nl_launch.py
+
+# Or use the convenience script (Windows)
+start_nl_mode.bat
+```
+
+**Example commands:**
+- `"Go to the kitchen"` - Navigate to predefined location
+- `"Move forward 1 meter"` - Motion control
+- `"Take a photo"` - Camera control
+- `"Stop"` - Emergency stop
+
+See [NL_CONTROL.md](NL_CONTROL.md) for detailed documentation.
 
 ---
 
@@ -163,11 +199,20 @@ ros2 launch rostofu_bringup copaw_launch.py ^
 RosTofu/
 ├── 📁 rostofu_bringup/          # ROS2 package
 │   ├── 📁 launch/
-│   │   └── copaw_launch.py      # Launch file
+│   │   ├── copaw_launch.py      # Basic launch file
+│   │   └── rospaw_nl_launch.py  # Natural language mode
 │   ├── 📁 rostofu_bringup/
-│   │   └── copaw_node.py        # Main node implementation
+│   │   ├── copaw_node.py        # Main node
+│   │   ├── nl_commander_node.py # Natural language commander
+│   │   ├── voice_input_node.py  # Voice input node
+│   │   └── copaw_bridge.py      # Copaw API bridge
+│   ├── 📁 config/
+│   │   └── rospaw_nl.yaml       # NL mode configuration
 │   ├── package.xml              # ROS2 manifest
 │   └── setup.py                 # Package setup
+├── 📄 rostofu_cli.py             # Command line tool
+├── 📄 start_nl_mode.bat         # Windows launcher
+├── 📄 NL_CONTROL.md             # NL documentation
 ├── 📄 pyproject.toml            # Python project config
 └── 📄 README.md                 # This file
 ```
@@ -176,12 +221,14 @@ RosTofu/
 
 ## 💻 Platform Support
 
-| Platform | Status | ROS2 Version |
-|----------|--------|--------------|
-| Ubuntu 22.04 | ✅ Fully Supported | Humble, Jazzy |
-| Ubuntu 24.04 | ✅ Fully Supported | Jazzy |
-| Windows 10/11 | ✅ Fully Supported | Humble |
-| macOS | ⚠️ Not Tested | — |
+| Platform | Status | ROS2 Version | Recommendation |
+|----------|--------|--------------|----------------|
+| Ubuntu 22.04 | ✅ Fully Supported | Humble, Jazzy | ⭐ **Production** |
+| Ubuntu 24.04 | ✅ Fully Supported | Jazzy | ⭐ **Production** |
+| Windows 10/11 | ✅ Fully Supported | Humble | Development/Testing |
+| macOS | ⚠️ Not Tested | — | — |
+
+> 🐧 **[Why Linux is better for robotics?](LINUX_ADVANTAGES.md)** - Real-time performance, native DDS, better stability
 
 ---
 
