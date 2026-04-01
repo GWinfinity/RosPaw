@@ -9,8 +9,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ros_distro: [humble, jazzy]
+        include:
+          - ros_distro: humble
+            ros_image: ros:humble-ros-base
+          - ros_distro: jazzy
+            ros_image: ros:jazzy-ros-base
     container:
-      image: ros:humble-ros-base
+      image: ${{ matrix.ros_image }}
     defaults:
       run:
         shell: bash
@@ -20,7 +28,7 @@ jobs:
     
     - name: Setup ROS
       run: |
-        source /opt/ros/humble/setup.bash
+        source /opt/ros/${{ matrix.ros_distro }}/setup.bash
         rosdep update
     
     - name: Check package.xml
@@ -49,13 +57,13 @@ jobs:
     
     - name: Install dependencies
       run: |
-        source /opt/ros/humble/setup.bash
+        source /opt/ros/${{ matrix.ros_distro }}/setup.bash
         cd rostofu_bringup
         rosdep install --from-paths . --ignore-src -y || true
     
     - name: Build package
       run: |
-        source /opt/ros/humble/setup.bash
+        source /opt/ros/${{ matrix.ros_distro }}/setup.bash
         mkdir -p ~/ros2_ws/src
         cp -r rostofu_bringup ~/ros2_ws/src/
         cd ~/ros2_ws
@@ -63,7 +71,7 @@ jobs:
     
     - name: Run tests
       run: |
-        source /opt/ros/humble/setup.bash
+        source /opt/ros/${{ matrix.ros_distro }}/setup.bash
         cd ~/ros2_ws
         colcon test --packages-select rostofu_bringup
         colcon test-result --verbose

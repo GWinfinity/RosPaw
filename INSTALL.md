@@ -1,5 +1,7 @@
 # RosTofu 安装指南
 
+支持 ROS 2 发行版: **Humble** | **Jazzy**
+
 ## 依赖说明
 
 本包提供 ROS2 与 copaw AI 助手的集成，但**不包含 copaw 本身**。
@@ -8,7 +10,7 @@
 
 | 依赖 | 安装方式 | 说明 |
 |------|----------|------|
-| ROS2 Humble | apt | ROS2 运行环境 |
+| ROS2 Humble/Jazzy | apt | ROS2 运行环境 |
 | copaw | pip | AI 助手核心 (需单独安装) |
 | aiohttp | pip/ rosdep | HTTP 客户端 |
 
@@ -16,11 +18,18 @@
 
 ## 安装步骤
 
-### 1. 安装 ROS2 Humble
+### 1. 安装 ROS2
 
+#### Humble (Ubuntu 22.04)
 ```bash
 # 按照官方文档安装
 # https://docs.ros.org/en/humble/Installation.html
+```
+
+#### Jazzy (Ubuntu 24.04)
+```bash
+# 按照官方文档安装
+# https://docs.ros.org/en/jazzy/Installation.html
 ```
 
 ### 2. 安装 copaw (重要)
@@ -54,15 +63,22 @@ rosdep install --from-paths src --ignore-src -y
 # 编译
 colcon build --packages-select rostofu_bringup
 
-#  source
+# source
 source install/setup.bash
 ```
 
 #### 从 apt 安装（发布后）
 
+**Humble:**
 ```bash
 sudo apt update
 sudo apt install ros-humble-rostofu-bringup
+```
+
+**Jazzy:**
+```bash
+sudo apt update
+sudo apt install ros-jazzy-rostofu-bringup
 ```
 
 ---

@@ -1,16 +1,17 @@
 #!/bin/bash
 # RosTofu Bloom 发布脚本
+# 支持 ROS 2 Humble 和 Jazzy
 
 set -e
 
 # 配置
 PACKAGE_NAME="rostofu_bringup"
-ROS_DISTRO="humble"
 SOURCE_URL="https://github.com/GWinfinity/RosTofu.git"
 RELEASE_URL="https://github.com/GWinfinity/rostofu_bringup-release.git"
 
 echo "========================================"
 echo "  RosTofu Bloom 发布脚本"
+echo "  支持发行版: humble, jazzy"
 echo "========================================"
 echo ""
 
@@ -32,6 +33,31 @@ if [ -z "$(git config --global user.name)" ] || [ -z "$(git config --global user
 fi
 
 echo "✓ git 配置正确"
+
+# 选择发行版
+echo ""
+echo "请选择要发布的 ROS 2 发行版:"
+echo "1) humble (LTS, 推荐)"
+echo "2) jazzy"
+echo "3) 同时发布到 humble 和 jazzy"
+echo ""
+read -p "请输入选项 (1/2/3): " choice
+
+case $choice in
+    1)
+        DISTROS=("humble")
+        ;;
+    2)
+        DISTROS=("jazzy")
+        ;;
+    3)
+        DISTROS=("humble" "jazzy")
+        ;;
+    *)
+        echo "❌ 无效选项"
+        exit 1
+        ;;
+esac
 
 # 检查当前目录
 cd rostofu_bringup
@@ -68,20 +94,31 @@ echo "========================================"
 echo ""
 
 # 检查是否有现有 track
-echo "📋 检查 bloom track..."
-if bloom-release "$ROS_DISTRO" --list-tracks 2>/dev/null | grep -q "^${PACKAGE_NAME}$"; then
-    echo "✓ 已存在 track，执行更新发布"
-    bloom-release --rosdistro "$ROS_DISTRO" --track "$ROS_DISTRO" "$PACKAGE_NAME"
-else
-    echo "🆕 未找到 track，创建新 track"
+for DISTRO in "${DISTROS[@]}"; do
     echo ""
-    echo "请确保已创建 release 仓库:"
-    echo "  $RELEASE_URL"
-    echo ""
-    read -p "确认已创建 release 仓库并按回车继续..."
+    echo "📦 处理发行版: $DISTRO"
+    echo "----------------------------------------"
     
-    bloom-release --rosdistro "$ROS_DISTRO" --track "$ROS_DISTRO" "$PACKAGE_NAME" --new-track
-fi
+    if bloom-release "$DISTRO" --list-tracks 2>/dev/null | grep -q "^${PACKAGE_NAME}$"; then
+        echo "✓ 已存在 track，执行更新发布"
+        bloom-release --rosdistro "$DISTRO" --track "$DISTRO" "$PACKAGE_NAME"
+    else
+        echo "🆕 未找到 track，创建新 track"
+        
+        if [ "$DISTRO" == "humble" ]; then
+            echo "提示: Humble 是 LTS 版本，推荐作为默认目标"
+        fi
+        
+        bloom-release --rosdistro "$DISTRO" --track "$DISTRO" "$PACKAGE_NAME" --new-track
+    fi
+    
+    if [ $? -eq 0 ]; then
+        echo "✓ $DISTRO 发布成功"
+    else
+        echo "❌ $DISTRO 发布失败"
+        exit 1
+    fi
+done
 
 echo ""
 echo "========================================"
@@ -91,5 +128,9 @@ echo ""
 echo "后续步骤:"
 echo "1. 检查生成的 PR: https://github.com/ros/rosdistro/pulls"
 echo "2. 等待 ROS Boss 审核"
-echo "3. 检查构建状态: http://repo.ros2.org/status_page/ros_humble_default.html"
+echo ""
+echo "构建状态:"
+for DISTRO in "${DISTROS[@]}"; do
+    echo "  - $DISTRO: http://repo.ros2.org/status_page/ros_${DISTRO}_default.html"
+done
 echo ""
