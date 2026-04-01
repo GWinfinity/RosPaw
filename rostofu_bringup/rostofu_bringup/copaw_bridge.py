@@ -15,7 +15,7 @@ import asyncio
 import aiohttp
 import subprocess
 from pathlib import Path
-from typing import Optional, Dict, Any, Callable
+from typing import Optional, Dict, Any, Callable, List
 from dataclasses import dataclass
 
 import rclpy
@@ -44,7 +44,7 @@ class CopawBridge:
         self.config = config
         self.process: Optional[subprocess.Popen] = None
         self.session: Optional[aiohttp.ClientSession] = None
-        self._callbacks: list[Callable] = []
+        self._callbacks: List[Callable] = []
         
         # 发布 copaw 响应
         self.response_pub = node.create_publisher(
